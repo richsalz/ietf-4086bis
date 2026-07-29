@@ -1,5 +1,5 @@
 ---
-title: "On Random Number"
+title: "On Random Numbers"
 abbrev: "4086bis"
 docname: draft-rsalz-4086bis-latest
 submissiontype: IETF
@@ -9,7 +9,7 @@ area: Security
 workgroup: SAAG Working Group
 stand_alone: yes
 smart_quotes: no
-obsoletes: 2026, 5657, 6410, 7100, 7127, 8789, 9282
+obsoletes: 4086
 pi: [toc, sortrefs, symrefs]
 
 author:
@@ -27,7 +27,7 @@ informative:
 --- abstract
 
 Things have changed a great deal in the two decades since RFC 4086,
-"Randomness Requiremenbts for Security," was published.
+"Randomness Requirements for Security," was published.
 In addition, as more IETF protocols use cryptography, the need
 for good-quality randomness has greatly increased.
 
@@ -39,7 +39,7 @@ Copy from 4086 ?
 # Introduction
 
 Things have changed a great deal in the two decades since RFC 4086,
-"Randomness Requiremenbts for Security," was published.
+"Randomness Requirements for Security," was published.
 In addition, as more IETF protocols use cryptography, the need
 for good-quality randomness has greatly increased.
 
@@ -60,7 +60,7 @@ standard IETF boilerplate sections.
 
 The following sub-sections define commonly-used terms.
 These area often mis-used, so the goal is to provide a common understanding.
-All of the definitions below should be taken in the context of cryptoraphy.
+All of the definitions below should be taken in the context of cryptography.
 
 ## Entropy
 
@@ -100,11 +100,11 @@ counter.
 ## Random Bit Generator (RBG)
 
 A device or algorithm that produces a sequence of bits that are
-both statistically independant, and unbiased.
+both statistically independent, and unbiased.
 
     define those terms
 
-## Psuedo-Random Number Generator (PRNG)
+## Pseudo-Random Number Generator (PRNG)
 
 Another name for DRBG. It is not truly random because the sequence of
 bits is completely determined by the initial seed.
