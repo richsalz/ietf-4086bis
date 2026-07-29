@@ -4,19 +4,18 @@
 
 SAAG Working Group                                               R. Salz
 Internet-Draft                                 Akamai Technologies, Inc.
-Obsoletes: 2026, 5657, 6410, 7100, 7127, 8789,              29 July 2026
-           9282 (if approved)                                           
+Obsoletes: 4086 (if approved)                               29 July 2026
 Intended status: Best Current Practice                                  
 Expires: 30 January 2027
 
 
-                            On Random Number
+                           On Random Numbers
                        draft-rsalz-4086bis-latest
 
 Abstract
 
    Things have changed a great deal in the two decades since RFC 4086,
-   "Randomness Requiremenbts for Security," was published.  In addition,
+   "Randomness Requirements for Security," was published.  In addition,
    as more IETF protocols use cryptography, the need for good-quality
    randomness has greatly increased.
 
@@ -69,7 +68,7 @@ Table of Contents
      2.2.  Seed
      2.3.  Nonce
      2.4.  Random Bit Generator (RBG)
-     2.5.  Psuedo-Random Number Generator (PRNG)
+     2.5.  Pseudo-Random Number Generator (PRNG)
      2.6.  Deterministic Random Bit Generator (DRBG)
      2.7.  Backtracking resistance
      2.8.  Forward or Prediction resistance
@@ -86,7 +85,7 @@ Table of Contents
 1.  Introduction
 
    Things have changed a great deal in the two decades since RFC 4086,
-   "Randomness Requiremenbts for Security," was published.  In addition,
+   "Randomness Requirements for Security," was published.  In addition,
    as more IETF protocols use cryptography, the need for good-quality
    randomness has greatly increased.
 
@@ -111,7 +110,7 @@ Table of Contents
    The following sub-sections define commonly-used terms.  These area
    often mis-used, so the goal is to provide a common understanding.
    All of the definitions below should be taken in the context of
-   cryptoraphy.
+   cryptography.
 
 2.1.  Entropy
 
@@ -149,11 +148,11 @@ Table of Contents
 2.4.  Random Bit Generator (RBG)
 
    A device or algorithm that produces a sequence of bits that are both
-   statistically independant, and unbiased.
+   statistically independent, and unbiased.
 
    define those terms
 
-2.5.  Psuedo-Random Number Generator (PRNG)
+2.5.  Pseudo-Random Number Generator (PRNG)
 
    Another name for DRBG.  It is not truly random because the sequence
    of bits is completely determined by the initial seed.
