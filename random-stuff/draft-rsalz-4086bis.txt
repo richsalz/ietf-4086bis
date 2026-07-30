@@ -1,0 +1,264 @@
+
+
+
+
+SAAG Working Group                                               R. Salz
+Internet-Draft                                 Akamai Technologies, Inc.
+Obsoletes: 4086 (if approved)                               30 July 2026
+Intended status: Best Current Practice                                  
+Expires: 31 January 2027
+
+
+                           On Random Numbers
+                       draft-rsalz-4086bis-latest
+
+Abstract
+
+   Things have changed a great deal in the two decades since RFC 4086,
+   "Randomness Requirements for Security," was published.  In addition,
+   as more IETF protocols use cryptography, the need for good-quality
+   randomness has greatly increased.
+
+   Copy from 4086 ?
+
+Discussion Venues
+
+   This note is to be removed before publishing as an RFC.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/richsalz/ietf-4086bis.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 31 January 2027.
+
+Copyright Notice
+
+   Copyright (c) 2026 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+Table of Contents
+
+   1.  Introduction
+     1.1.  Structure of this Document
+   2.  Conventions and Definitions
+     2.1.  Entropy
+     2.2.  Seed
+     2.3.  Nonce
+     2.4.  Random Bit Generator (RBG)
+     2.5.  Pseudo-Random Number Generator (PRNG)
+     2.6.  Deterministic Random Bit Generator (DRBG)
+     2.7.  Backtracking resistance
+     2.8.  Forward or Prediction resistance
+   3.  Recommendations
+   4.  Concerns
+     4.1.  Fork
+     4.2.  Uniform distribution
+   5.  Security Considerations
+   6.  IANA Considerations
+   7.  Normative References
+   Acknowledgments
+   Author's Address
+
+1.  Introduction
+
+   Things have changed a great deal in the two decades since RFC 4086,
+   "Randomness Requirements for Security," was published.  The
+   cryptographic community has greatly advanced its knowledge of the the
+   requirments and desirable properties for random number systems, the
+   algorithms that underpin them, how they may be used and how they have
+   been attacked.  In addition, as more IETF protocols use cryptography,
+   the need for good-quality randomness has greatly increased.
+
+   Copy abstract from 4086 ?
+
+1.1.  Structure of this Document
+
+   This document first defines some commonly-used terms in the
+   generation of random numbers.  The next section is short, and uses
+   those terms to create best practice.  The following section lists
+   some warnings about common concerns and mistakes.  Finally, it
+   concludes with the standard IETF boilerplate sections.
+
+2.  Conventions and Definitions
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+   The following sub-sections define commonly-used terms.  These area
+   often mis-used, so the goal is to provide a common understanding.
+   All of the definitions below should be taken in the context of
+   cryptography.
+
+2.1.  Entropy
+
+   Entropy is a property, not a value, and it means how hard it is to
+   guess the value.  For example, a coin flip as low entropy because
+   there are only two choices and a four-digit PIN has no more than
+   10,000 possibilities.  On the other hand, 256-byte SHA3 (ref needed)
+   digest has very high entropy because it is extremely hard to predict.
+
+   Sufficient entropy is a necessary (but not sufficient) property for a
+   secure random number generation system.  Without sufficient entropy
+   the system may be predictable.
+
+   Good sources of entropy include hardware timings, mouse movements (if
+   properly scaled) and the like -- things that are generated from
+   hardware.  Common server systems often repeat the same actions every
+   time the boot, which means that system-provided entropy might not be
+   immediately available.  Many hardware systems provide RNG facilities
+   that may be used as entropy sources, such as rdrand/rdseed on X86
+   class CPUs, RNDR registers on ARM CPUs.
+
+   Combination of multiple entropy sources is desirable where possible,
+   to avoid failure if one of them turns out to be predictable.
+
+2.2.  Seed
+
+   A seed is the specific value used to initialize an algorithm that
+   generates a sequence of unpredicable "random" numbers.  The seed
+   value should have high entropy.  It is important that the seed not be
+   disclosed, as an adversary could duplicate the bytes generated by the
+   algorithm and determine any keys generated.
+
+2.3.  Nonce
+
+   A nonce is a number that is used once.  It need not be secret, and is
+   often public or part of the protocol.  For example, QUIC defines a
+   nonce that is used to detect if a packet has already been received.
+
+   The non-repeatability can be highly important.  For example, if AES-
+   GCM repeats a nonce, an adversary can determine the key.  AES-SIV is
+   resistant to this.  It is common for a nonce to be a simple
+   incrementing counter.
+
+   In many protocols, nonce values are sent in cleartext.  For example,
+   the initial SSH key exchange (RFC 4253 section 7.1) includes a 16
+   byte "cookie" that each peer sends to make each key exchange
+   (statistically) unique.  Nonces therefore represent one path by which
+   an attacker may directly observe the raw output of a random number
+   system.
+
+2.4.  Random Bit Generator (RBG)
+
+   A device or algorithm that produces a sequence of bits that are both
+   statistically independent, and unbiased.
+
+   define those terms
+
+2.5.  Pseudo-Random Number Generator (PRNG)
+
+   Another name for DRBG.  It is not truly random because the sequence
+   of bits is completely determined by the initial seed.
+
+   https://en.wikipedia.org/wiki/Pseudorandom_number_generator
+
+2.6.  Deterministic Random Bit Generator (DRBG)
+
+   An RBG that uses a seed and produces random bits provided the seed is
+   not known.
+
+   https://csrc.nist.gov/pubs/sp/800/90/a/r1/final
+
+2.7.  Backtracking resistance
+
+   If an adversary knows the state of the RBG at a time T, they will be
+   unable to predict the output at an earlier time, T - n, provided they
+   are unable to perform the work that matches the claimed strength of
+   the RBG.
+
+   This is commonly called "forward secrecy" in protocols such as TLS.
+
+   https://csrc.nist.gov/glossary/term/backtracking_resistance
+
+2.8.  Forward or Prediction resistance
+
+   If an adversary knows the state of the RBG at a time T, they will be
+   unable to predict the output at a later time, T + n, provided they
+   are unable to perform the work that matches the claimed strength of
+   the RBG.
+
+   https://csrc.nist.gov/glossary/term/prediction_resistance
+
+3.  Recommendations
+
+   Use local operating system if available.
+
+   Use libraries such as OpenSSL.
+
+   Determine the best entropy source available and use it to seed a
+   DRBG, such as in OpenSSL.
+
+   If possible, use a main DRBG to seed two separate DRBG's, one to
+   generate private keys, and one for all other users.
+
+   Save seeds across boot
+
+   Periodic reseeding
+
+4.  Concerns
+
+4.1.  Fork
+
+   It's common for a server to fork a separate client process for each
+   incoming connection, or have a pool.  Reset the RNG when forking.
+
+4.2.  Uniform distribution
+
+   arc4random_uniform() if the upper bound isn't a power of two.
+   https://github.com/openbsd/src/blob/master/lib/libc/crypt/
+   arc4random_uniform.c
+
+5.  Security Considerations
+
+   This is an important document!
+
+6.  IANA Considerations
+
+   This document has no IANA actions.
+
+7.  Normative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+Acknowledgments
+
+   TODO acknowledge.
+
+Author's Address
+
+   Rich Salz
+   Akamai Technologies, Inc.
+   Email: rsalz@akamai.com
