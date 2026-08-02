@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-07-30T01:28:53.462061+00:00",
+  "timestamp": "2026-08-02T01:53:01.863873+00:00",
   "repo": "richsalz/ietf-4086bis",
   "labels": [
     {
@@ -50,5 +50,65 @@
     }
   ],
   "issues": [],
-  "pulls": []
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDOTnTNoc74XUrM",
+      "title": "Expand on a few things, add some notes for later",
+      "url": "https://github.com/richsalz/ietf-4086bis/pull/1",
+      "state": "OPEN",
+      "author": "djmdjm",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2026-07-30T06:13:05Z",
+      "updatedAt": "2026-07-30T15:32:35Z",
+      "baseRepository": "richsalz/ietf-4086bis",
+      "baseRefName": "main",
+      "baseRefOid": "696569ca802b85bf156439b11dc592f1391aef7b",
+      "headRepository": "richsalz/ietf-4086bis",
+      "headRefName": "random-stuff",
+      "headRefOid": "77e3c0e88a56bee31c3112b17daf46fa2d297acc",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOTnTNoc8AAAABH07RTQ",
+          "commit": {
+            "abbreviatedOid": "77e3c0e"
+          },
+          "author": "richsalz",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "Minor nits.\n\nPlease add yourself as an author if you're willing.\n\nFeel free to merge after doing those things.",
+          "createdAt": "2026-07-30T15:05:10Z",
+          "updatedAt": "2026-07-30T15:32:35Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "s/the the/the/\nmaybe s/systems/generators/ or libraries? Or leave alone.\n",
+              "createdAt": "2026-07-30T15:05:10Z",
+              "updatedAt": "2026-07-30T15:32:35Z"
+            },
+            {
+              "originalPosition": 6,
+              "body": "a/used/used, / :)",
+              "createdAt": "2026-07-30T15:30:41Z",
+              "updatedAt": "2026-07-30T15:32:35Z"
+            },
+            {
+              "originalPosition": 26,
+              "body": "`rdrand`/`rdseed` and `RNDR`",
+              "createdAt": "2026-07-30T15:31:20Z",
+              "updatedAt": "2026-07-30T15:32:35Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
