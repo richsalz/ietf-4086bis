@@ -14,18 +14,48 @@ pi: [toc, sortrefs, symrefs]
 
 author:
  -
+    ins: D. Miller
+    name: Damien Miller
+    organization: OpenSSH
+    email: djm@openssh.org
+ -
     ins: R. Salz
     name: Rich Salz
     organization: Akamai Technologies, Inc.
     email: rsalz@akamai.com
 
 normative:
-    NISTDRBG:
-      title: "Recommendation for Random Number Generation Using Deterministic Random Bit Generators"
-      target: https://csrc.nist.gov/pubs/sp/800/90/a/r1/final
-      date: "June 2015"
 
 informative:
+    OSSLCONFIG:
+      title: "Notes on random number generation"
+      target: https://github.com/openssl/openssl/blob/master/INSTALL.md#notes-on-random-number-generation
+    RANDBYTES:
+      title: "RAND_bytes"
+      target: https://docs.openssl.org/master/man3/RAND_bytes/
+    BCRYPT:
+     title: "BCryptGenRandom function (bcrypt.h)"
+     target: https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/nf-bcrypt-bcryptgenrandom
+    ARC4RAND:
+      title: "arc4random manual page"
+      target: https://man7.org/linux/man-pages/man3/arc4random.3.html
+    GETRAND:
+      title: "getrandom manual page"
+      target: https://man7.org/linux/man-pages/man2/getrandom.2.html
+    TWIST:
+      title: "Marsenne Twister"
+      target: https://en.wikipedia.org/wiki/Mersenne_Twister
+    NISTDRBG:
+      title: "Recommendation for Random Number Generation Using Deterministic Random Bit Generators"
+      target: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-90Ar1.pdf
+      date: "June 2015"
+      author:
+      -
+        ins: E. Barker
+        name: Elaine Barker
+      -
+        ins: J. Kelsey
+        name: John Kelsey
 
 
 --- abstract
@@ -148,15 +178,35 @@ useful knowledge about future RBG internal states or outputs.
 
 # Recommendations
 
-Use local operating system if available.
+Use an appropriate function from the local operating system if available.
+At the time of writing,
+on Windows use the `BCryptGenRandom()` function described in {{BCRYPT}}.
 
-Use libraries such as OpenSSL.
+For OpenBSD 2.1, FreeBSD 3.0, NetBSD 1.6, DragonFly 1.0, or Linux C
+library since July 2022 use the `arc4random()` describred in {{ARC4RAND}}.
+The `getrandom()` function is also available on many systems and
+is described in {{GETRAND}}.
 
-Determine the best entropy source available and use it to seed a DRBG,
-such as in OpenSSL.
+On older Unix-like systems, the `/dev/random` or `/dev/urandom`
+pseudo-devices may be available; check the documentation.
+The primary difference is that the first will block if the kernel
+believes there is not enough entropy in the seed material.
 
-If possible, use a main DRBG to seed two separate DRBG's, one to generate
-private keys, and one for all other users.
+If the operating system does not provide something suitable, use a function
+from the `RAND_bytes` set described in {{RANDBYTES}}, particularly if provided
+as part of the operating system distribution as it is most likely to
+enable the best source of entropy for seeding.
+If the library must be configured and compiled directly,
+see the notes in {{OSSLCONFIG}} about
+random number generation.
+
+For smaller systems that are not generating cryptographic material,
+the Mersenne Twister PRNG may be acceptable.
+A full description and sample code can be found at {{TWIST}}.
+
+    If possible, use a main DRBG to seed two separate DRBG's,
+    one to generate private keys, and one for all other users.
+    ????
 
 # Concerns {#concerns}
 
