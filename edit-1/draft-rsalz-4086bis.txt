@@ -1,0 +1,304 @@
+
+
+
+
+SAAG Working Group                                             D. Miller
+Internet-Draft                                                   OpenSSH
+Obsoletes: 4086 (if approved)                                    R. Salz
+Intended status: Best Current Practice         Akamai Technologies, Inc.
+Expires: 5 February 2027                                   4 August 2026
+
+
+                           On Random Numbers
+                       draft-rsalz-4086bis-latest
+
+Abstract
+
+   Things have changed a great deal in the two decades since RFC 4086,
+   "Randomness Requirements for Security," was published.  In addition,
+   as more IETF protocols use cryptography, the need for good-quality
+   randomness has greatly increased.
+
+   Copy from 4086 ?
+
+Discussion Venues
+
+   This note is to be removed before publishing as an RFC.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/richsalz/ietf-4086bis.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 5 February 2027.
+
+Copyright Notice
+
+   Copyright (c) 2026 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+Table of Contents
+
+   1.  Introduction
+     1.1.  Structure of this Document
+   2.  Conventions and Definitions
+     2.1.  Entropy
+     2.2.  Seed
+     2.3.  Nonce
+     2.4.  Random Bit Generator (RBG)
+     2.5.  Deterministic Random Bit Generator (DRBG)
+     2.6.  Pseudo-Random Number Generator (PRNG)
+     2.7.  Backtracking resistance
+     2.8.  Forward or Prediction resistance
+   3.  Recommendations
+   4.  Concerns
+     4.1.  Fork
+     4.2.  Uniform distribution
+   5.  Security Considerations
+   6.  IANA Considerations
+   7.  References
+     7.1.  Normative References
+     7.2.  Informative References
+   Acknowledgments
+   Authors' Addresses
+
+1.  Introduction
+
+   Things have changed a great deal in the two decades since RFC 4086,
+   "Randomness Requirements for Security," was published.  In addition,
+   as more IETF protocols use cryptography, the need for good-quality
+   randomness has greatly increased.
+
+   Copy some text from 4086 ?
+
+1.1.  Structure of this Document
+
+   This document first defines some commonly-used terms in the
+   generation of random numbers.  This is followed by a short section
+   that uses those terms to define a best practice for generating random
+   numbers.  This is followed by a section that lists some common
+   concerns and mistakes, and may be thought of as a "Security
+   Considerations" guide for implementors.  Finally, the document
+   concludes with the standrad IETF boilerplate sections.
+
+2.  Conventions and Definitions
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+   The following sub-sections define commonly-used terms.  These are
+   often mis-used, so the goal is to provide a common understanding.
+   All of the definitions below should be taken in the context of
+   cryptography.
+
+2.1.  Entropy
+
+   Entropy is a property, not a value, and it means how hard it is to
+   guess the value.  For example, a coin flip as low entropy because
+   there are only two choices and a four-digit PIN has no more than
+   10,000 possibilities.  On the other hand, 256-byte SHA3 (ref needed)
+   digest has very high entropy because it is extremely hard to predict.
+
+   Good sources of entropy include hardware timings, mouse movements (if
+   properly scaled) and the like -- things that are generated from
+   hardware.  Common server systems often repeat the same actions every
+   time the boot, which means that system-provided entropy might not be
+   immediately available.
+
+2.2.  Seed
+
+   A seed is the specific value used to initialize an algorithm that
+   generates random numbers.  The seed value should have high entropy.
+   It is important that the seed not be disclosed, as an adversary could
+   duplicate the bytes generated by the algorithm and determine any keys
+   generated.
+
+2.3.  Nonce
+
+   A nonce is a number that is used once.  It need not be secret, and is
+   often public or part of the protocol.  For example, QUIC defines a
+   nonce that is used to detect if a packet has already been received.
+
+   The non-repeatability can be highly important.  For example, if AES-
+   GCM repeats a nonce, an adversary can determine the key.  AES-SIV is
+   resistant to this.  It is common for a nonce to be a simple
+   incrementing counter.
+
+2.4.  Random Bit Generator (RBG)
+
+   A device or algorithm that produces a sequence of bits that are both
+   statistically independent -- knowing one bit provides no information
+   about the value of any other bit -- and unbiased -- no value is more
+   likely to occur than any other value.  See Section 4.2 for concerns
+   about bias.
+
+2.5.  Deterministic Random Bit Generator (DRBG)
+
+   An RBG that uses a seed and produces random bits.  The security of
+   the stream requires that the the seed is not known by an adversary.
+   The output stream has a defined limit, and the DRBG will need to be
+   provided new seed material when the limit is reached.  See [NISTDRBG]
+   for more complete specification and algorithm descriptions.
+
+2.6.  Pseudo-Random Number Generator (PRNG)
+
+   An older term for DRBG, although it can imply that the seed need not
+   be kept private, such as when using the output stream for
+   simulations.
+
+2.7.  Backtracking resistance
+
+   If an adversary knows the state of the RBG at a time T, they will be
+   unable to recover the state at time T-1.  Further, all output up to
+   time T-1 cannot be distinguished from random output.  This is usually
+   accomplished by ensuring that the RBG generation algorithm is a one-
+   way function.
+
+   Put another way, backtracking resistance means that a compromise of
+   the RBG internal state has no effect on the security of prior
+   outputs.  This is commonly called "forward secrecy" in protocols such
+   as TLS.
+
+2.8.  Forward or Prediction resistance
+
+   If an adversary knows the state of the RBG at a time T, they will be
+   unable to predict the output at a time, T+1.  This can only be
+   provided only by ensuring that a RBG is reseeded between consecutive
+   requests, provided that knowledge of the current RBG internal state
+   does not allow an adversary any useful knowledge about future RBG
+   internal states or outputs.
+
+3.  Recommendations
+
+   Use an appropriate function from the local operating system if
+   available.  At the time of writing, on Windows use the
+   BCryptGenRandom() function described in [BCRYPT].
+
+   For OpenBSD 2.1, FreeBSD 3.0, NetBSD 1.6, DragonFly 1.0, or Linux C
+   library since July 2022 use the arc4random() describred in
+   [ARC4RAND].  The getrandom() function is also available on many
+   systems and is described in [GETRAND].
+
+   On older Unix-like systems, the /dev/random or /dev/urandom pseudo-
+   devices may be available; check the documentation.  The primary
+   difference is that the first will block if the kernel believes there
+   is not enough entropy in the seed material.
+
+   If the operating system does not provide something suitable, use a
+   function from the RAND_bytes set described in [RANDBYTES],
+   particularly if provided as part of the operating system distribution
+   as it is most likely to enable the best source of entropy for
+   seeding.  If the library must be configured and compiled directly,
+   see the notes in [OSSLCONFIG] about random number generation.
+
+   For smaller systems that are not generating cryptographic material,
+   the Mersenne Twister PRNG may be acceptable.  A full description and
+   sample code can be found at [TWIST].
+
+   If possible, use a main DRBG to seed two separate DRBG's,
+   one to generate private keys, and one for all other users.
+   ????
+
+4.  Concerns
+
+4.1.  Fork
+
+   It's common for a server to fork a separate client process for each
+   incoming connection, or have a pool.  Reset the RNG when forking.
+
+4.2.  Uniform distribution
+
+   arc4random_uniform() if the upper bound isn't a power of two.
+   https://github.com/openbsd/src/blob/master/lib/libc/crypt/
+   arc4random_uniform.c
+
+5.  Security Considerations
+
+   This is an important document!
+
+6.  IANA Considerations
+
+   This document has no IANA actions.
+
+7.  References
+
+7.1.  Normative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+7.2.  Informative References
+
+   [ARC4RAND] "arc4random manual page", n.d.,
+              <https://man7.org/linux/man-pages/man3/arc4random.3.html>.
+
+   [BCRYPT]   "BCryptGenRandom function (bcrypt.h)", n.d.,
+              <https://learn.microsoft.com/en-
+              us/windows/win32/api/bcrypt/nf-bcrypt-bcryptgenrandom>.
+
+   [GETRAND]  "getrandom manual page", n.d.,
+              <https://man7.org/linux/man-pages/man2/getrandom.2.html>.
+
+   [NISTDRBG] Barker, E. and J. Kelsey, "Recommendation for Random
+              Number Generation Using Deterministic Random Bit
+              Generators", June 2015,
+              <https://nvlpubs.nist.gov/nistpubs/SpecialPublications/
+              NIST.SP.800-90Ar1.pdf>.
+
+   [OSSLCONFIG]
+              "Notes on random number generation", n.d.,
+              <https://github.com/openssl/openssl/blob/master/
+              INSTALL.md#notes-on-random-number-generation>.
+
+   [RANDBYTES]
+              "RAND_bytes", n.d.,
+              <https://docs.openssl.org/master/man3/RAND_bytes/>.
+
+   [TWIST]    "Marsenne Twister", n.d.,
+              <https://en.wikipedia.org/wiki/Mersenne_Twister>.
+
+Acknowledgments
+
+   TODO acknowledge.
+
+Authors' Addresses
+
+   Damien Miller
+   OpenSSH
+   Email: djm@openssh.org
+
+
+   Rich Salz
+   Akamai Technologies, Inc.
+   Email: rsalz@akamai.com
