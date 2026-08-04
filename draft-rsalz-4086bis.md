@@ -20,6 +20,10 @@ author:
     email: rsalz@akamai.com
 
 normative:
+    NISTDRBG:
+      title: "Recommendation for Random Number Generation Using Deterministic Random Bit Generators"
+      target: https://csrc.nist.gov/pubs/sp/800/90/a/r1/final
+      date: "June 2015"
 
 informative:
 
@@ -100,28 +104,30 @@ counter.
 ## Random Bit Generator (RBG)
 
 A device or algorithm that produces a sequence of bits that are
-both statistically independent, and unbiased.
-
-    define those terms
-
-## Pseudo-Random Number Generator (PRNG)
-
-Another name for DRBG. It is not truly random because the sequence of
-bits is completely determined by the initial seed.
-
-https://en.wikipedia.org/wiki/Pseudorandom_number_generator
+both statistically independent -- knowing one bit provides no information
+about the value of any other bit -- and unbiased -- no value is more
+likely to occur than any other value.
+See {{uniform}} for concerns about bias.
 
 ## Deterministic Random Bit Generator (DRBG)
 
-An RBG that uses a seed and produces random bits provided the seed is
-not known.
+An RBG that uses a seed and produces random bits.
+The security of the stream requires that the the seed is
+not known by an adversary.
+The output stream has a defined limit, and the DRBG will need to be
+provided new seed material when the limit is reached.
+See {{NISTDRBG}} for more complete specification and algorithm
+descriptions.
 
-https://csrc.nist.gov/pubs/sp/800/90/a/r1/final
+## Pseudo-Random Number Generator (PRNG)
+
+An older term for DRBG, although it can imply that the seed need
+not be kept private, such as when using the output stream for simulations.
 
 ##  Backtracking resistance
 
 If an adversary knows the state of the RBG at a time `T`, they will
-be unable to predict the output at an earlier time, `T - n`, provided they
+be unable to predict the output at an earlier time, `T-n`, provided they
 are unable to perform the work that matches the claimed strength of
 the RBG.
 
@@ -132,7 +138,7 @@ https://csrc.nist.gov/glossary/term/backtracking_resistance
 ## Forward or Prediction resistance
 
 If an adversary knows the state of the RBG at a time `T`, they will be
-unable to predict the output at a later time, `T + n`, provided they are
+unable to predict the output at a later time, `T+n`, provided they are
 unable to perform the work that matches the claimed strength of the RBG.
 
 https://csrc.nist.gov/glossary/term/prediction_resistance
@@ -157,7 +163,7 @@ It's common for a server to fork a separate client process for each
 incoming connection, or have a pool.
 Reset the RNG when forking.
 
-## Uniform distribution
+## Uniform distribution {#uniform}
 
 arc4random_uniform() if the upper bound isn't a power of two.
 https://github.com/openbsd/src/blob/master/lib/libc/crypt/arc4random_uniform.c
