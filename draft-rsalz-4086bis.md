@@ -47,23 +47,26 @@ Things have changed a great deal in the two decades since RFC 4086,
 In addition, as more IETF protocols use cryptography, the need
 for good-quality randomness has greatly increased.
 
-    Copy abstract from 4086 ?
+    Copy some text from 4086 ?
 
 ## Structure of this Document
 
 This document first defines some commonly-used terms in the
-generation of random numbers. The next section is short, and uses those terms
-to create best practice. The following section lists some warnings about
-common concerns and mistakes. Finally, it concludes with the
-standard IETF boilerplate sections.
-
+generation of random numbers.
+This is followed by a short section that uses those terms to
+define a best practice for generating random numbers.
+This is followed by a section that lists some common concerns
+and mistakes, and may be thought of as a "Security Considerations"
+guide for implementors.
+Finally, the document concludes with the standrad IETF boilerplate
+sections.
 
 # Conventions and Definitions
 
 {::boilerplate bcp14-tagged}
 
 The following sub-sections define commonly-used terms.
-These area often mis-used, so the goal is to provide a common understanding.
+These are often mis-used, so the goal is to provide a common understanding.
 All of the definitions below should be taken in the context of cryptography.
 
 ## Entropy
@@ -126,22 +129,22 @@ not be kept private, such as when using the output stream for simulations.
 
 ##  Backtracking resistance
 
-If an adversary knows the state of the RBG at a time `T`, they will
-be unable to predict the output at an earlier time, `T-n`, provided they
-are unable to perform the work that matches the claimed strength of
-the RBG.
+If an adversary knows the state of the RBG at a time `T`, they will be unable
+to recover the state at time `T-1`.  Further, all output up to time `T-1`
+cannot be distinguished from random output.  This is usually accomplished by
+ensuring that the RBG generation algorithm is a one-way function.
 
+Put another way, backtracking resistance means that a compromise of the RBG
+internal state has no effect on the security of prior outputs.
 This is commonly called "forward secrecy" in protocols such as TLS.
-
-https://csrc.nist.gov/glossary/term/backtracking_resistance
 
 ## Forward or Prediction resistance
 
-If an adversary knows the state of the RBG at a time `T`, they will be
-unable to predict the output at a later time, `T+n`, provided they are
-unable to perform the work that matches the claimed strength of the RBG.
-
-https://csrc.nist.gov/glossary/term/prediction_resistance
+If an adversary knows the state of the RBG at a time `T`, they will be unable
+to predict the output at a time, `T+1`.  This can only be provided only by
+ensuring that a RBG is reseeded between consecutive requests, provided that
+knowledge of the current RBG internal state does not allow an adversary any
+useful knowledge about future RBG internal states or outputs.
 
 # Recommendations
 
@@ -155,7 +158,7 @@ such as in OpenSSL.
 If possible, use a main DRBG to seed two separate DRBG's, one to generate
 private keys, and one for all other users.
 
-# Concerns
+# Concerns {#concerns}
 
 ## Fork
 
