@@ -13,22 +13,22 @@ In addition, as more IETF protocols use cryptography, the need
 for good-quality randomness has greatly increased. 
        Copy from 4086 ? 
     ' name="description">
-<meta content="xml2rfc 3.34.0" name="generator">
+<meta content="xml2rfc 3.34.1" name="generator">
 <meta content="draft-rsalz-4086bis-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.34.0
-    Python 3.14.5
-    ConfigArgParse 1.7.5
+  xml2rfc 3.34.1
+    Python 3.14.7
+    ConfigArgParse 1.7.7
     google-i18n-address 3.1.1
     intervaltree 3.2.1
     Jinja2 3.1.6
     lxml 6.1.1
     natsort 8.4.0
-    platformdirs 4.10.1
+    platformdirs 4.11.10
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.33.1
-    wcwidth 0.8.2
+    wcwidth 0.8.4
 -->
 <link href="draft-rsalz-4086bis.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1044,11 +1044,11 @@ svg {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">4086bis</td>
-<td class="right">July 2026</td>
+<td class="right">October 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Salz</td>
-<td class="center">Expires 30 January 2027</td>
+<td class="center">Expires 5 April 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1064,12 +1064,12 @@ svg {
 <a href="https://www.rfc-editor.org/rfc/rfc4086" class="eref">4086</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-07-29" class="published">29 July 2026</time>
+<time datetime="2026-10-02" class="published">2 October 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Best Current Practice</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-01-30">30 January 2027</time></dd>
+<dd class="expires"><time datetime="2027-04-05">5 April 2027</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1115,7 +1115,7 @@ for good-quality randomness has greatly increased.<a href="#section-abstract-1" 
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 30 January 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 5 April 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1221,6 +1221,10 @@ for good-quality randomness has greatly increased.<a href="#section-abstract-1" 
       </h2>
 <p id="section-1-1">Things have changed a great deal in the two decades since RFC 4086,
 "Randomness Requirements for Security," was published.
+The cryptographic community has greatly advanced its knowledge of
+the the requirments and desirable properties for random number systems,
+the algorithms that underpin them, how they may be used and how they have
+been attacked.
 In addition, as more IETF protocols use cryptography, the need
 for good-quality randomness has greatly increased.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-1-2">
@@ -1264,12 +1268,20 @@ value. For example, a coin flip as low entropy because there are only two
 choices and a four-digit PIN has no more than 10,000 possibilities. On the
 other hand,  256-byte SHA3 (ref needed) digest has very high entropy because
 it is extremely hard to predict.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
-<p id="section-2.1-2">Good sources of entropy include hardware
+<p id="section-2.1-2">Sufficient entropy is a necessary (but not sufficient) property for a secure
+random number generation system. Without sufficient entropy the system may be
+predictable.<a href="#section-2.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.1-3">Good sources of entropy include hardware
 timings, mouse movements (if properly scaled) and the like -- things that are
 generated from hardware.
 Common server systems often repeat the same actions every time the boot,
 which means that system-provided entropy might not be immediately
-available.<a href="#section-2.1-2" class="pilcrow">¶</a></p>
+available.
+Many hardware systems provide RNG facilities that may be used as
+entropy sources, such as rdrand/rdseed on X86 class CPUs, RNDR registers on
+ARM CPUs.<a href="#section-2.1-3" class="pilcrow">¶</a></p>
+<p id="section-2.1-4">Combination of multiple entropy sources is desirable where possible, to
+avoid failure if one of them turns out to be predictable.<a href="#section-2.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="seed">
@@ -1278,7 +1290,7 @@ available.<a href="#section-2.1-2" class="pilcrow">¶</a></p>
 <a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-seed" class="section-name selfRef">Seed</a>
         </h3>
 <p id="section-2.2-1">A seed is the specific value used to initialize an algorithm that
-generates random numbers.
+generates a sequence of unpredicable "random" numbers.
 The seed value should have high entropy.
 It is important that the seed not be disclosed, as an adversary
 could duplicate the bytes generated by the algorithm and determine
@@ -1297,6 +1309,11 @@ that is used to detect if a packet has already been received.<a href="#section-2
 repeats a nonce, an adversary can determine the key. AES-SIV is
 resistant to this. It is common for a nonce to be a simple incrementing
 counter.<a href="#section-2.3-2" class="pilcrow">¶</a></p>
+<p id="section-2.3-3">In many protocols, nonce values are sent in cleartext. For example,
+the initial SSH key exchange (RFC 4253 section 7.1) includes a 16 byte
+"cookie" that each peer sends to make each key exchange (statistically)
+unique. Nonces therefore represent one path by which an attacker may directly
+observe the raw output of a random number system.<a href="#section-2.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="random-bit-generator-rbg">
@@ -1370,6 +1387,8 @@ unable to perform the work that matches the claimed strength of the RBG.<a href=
 such as in OpenSSL.<a href="#section-3-3" class="pilcrow">¶</a></p>
 <p id="section-3-4">If possible, use a main DRBG to seed two separate DRBG's, one to generate
 private keys, and one for all other users.<a href="#section-3-4" class="pilcrow">¶</a></p>
+<p id="section-3-5">Save seeds across boot<a href="#section-3-5" class="pilcrow">¶</a></p>
+<p id="section-3-6">Periodic reseeding<a href="#section-3-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="concerns">
