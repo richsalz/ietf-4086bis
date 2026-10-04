@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-10-01T03:11:30.123260+00:00",
+  "timestamp": "2026-10-04T03:28:23.543658+00:00",
   "repo": "richsalz/ietf-4086bis",
   "labels": [
     {
@@ -56,24 +56,26 @@
       "id": "PR_kwDOTnTNoc74XUrM",
       "title": "Expand on a few things, add some notes for later",
       "url": "https://github.com/richsalz/ietf-4086bis/pull/1",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "djmdjm",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2026-07-30T06:13:05Z",
-      "updatedAt": "2026-07-30T15:32:35Z",
+      "updatedAt": "2026-10-02T17:24:23Z",
       "baseRepository": "richsalz/ietf-4086bis",
       "baseRefName": "main",
       "baseRefOid": "696569ca802b85bf156439b11dc592f1391aef7b",
       "headRepository": "richsalz/ietf-4086bis",
       "headRefName": "random-stuff",
       "headRefOid": "77e3c0e88a56bee31c3112b17daf46fa2d297acc",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2026-10-02T17:24:23Z",
+      "mergedAt": "2026-10-02T17:24:23Z",
+      "mergedBy": "richsalz",
+      "mergeCommit": {
+        "oid": "89c3f7ea5a63c8183674daafb355310f21cd6f42"
+      },
       "comments": [],
       "reviews": [
         {
