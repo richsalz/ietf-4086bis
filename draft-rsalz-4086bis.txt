@@ -4,9 +4,9 @@
 
 SAAG Working Group                                               R. Salz
 Internet-Draft                                 Akamai Technologies, Inc.
-Obsoletes: 4086 (if approved)                             2 October 2026
+Obsoletes: 4086 (if approved)                             5 October 2026
 Intended status: Best Current Practice                                  
-Expires: 5 April 2027
+Expires: 8 April 2027
 
 
                            On Random Numbers
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 April 2027.
+   This Internet-Draft will expire on 8 April 2027.
 
 Copyright Notice
 
@@ -86,11 +86,12 @@ Table of Contents
 
    Things have changed a great deal in the two decades since RFC 4086,
    "Randomness Requirements for Security," was published.  The
-   cryptographic community has greatly advanced its knowledge of the the
-   requirments and desirable properties for random number systems, the
-   algorithms that underpin them, how they may be used and how they have
-   been attacked.  In addition, as more IETF protocols use cryptography,
-   the need for good-quality randomness has greatly increased.
+   cryptographic community has greatly advanced its knowledge of the
+   requirments and desirable properties for random number generators,
+   the algorithms that underpin them, how they may be used, and how they
+   have been attacked.  In addition, as more IETF protocols use
+   cryptography, the need for good-quality randomness has greatly
+   increased.
 
    Copy abstract from 4086 ?
 
@@ -133,7 +134,7 @@ Table of Contents
    time the boot, which means that system-provided entropy might not be
    immediately available.  Many hardware systems provide RNG facilities
    that may be used as entropy sources, such as rdrand/rdseed on X86
-   class CPUs, RNDR registers on ARM CPUs.
+   class CPUs, and RNDR registers on ARM CPUs.
 
    Combination of multiple entropy sources is desirable where possible,
    to avoid failure if one of them turns out to be predictable.
@@ -255,7 +256,8 @@ Table of Contents
 
 Acknowledgments
 
-   TODO acknowledge.
+   Damien Miller contributed enough to be considered a co-author, and
+   will be recorded as such if he agrees.
 
 Author's Address
 
