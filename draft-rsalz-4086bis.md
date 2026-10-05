@@ -41,8 +41,8 @@ Copy from 4086 ?
 Things have changed a great deal in the two decades since RFC 4086,
 "Randomness Requirements for Security," was published.
 The cryptographic community has greatly advanced its knowledge of
-the the requirments and desirable properties for random number systems,
-the algorithms that underpin them, how they may be used and how they have
+the requirments and desirable properties for random number generators,
+the algorithms that underpin them, how they may be used, and how they have
 been attacked.
 In addition, as more IETF protocols use cryptography, the need
 for good-quality randomness has greatly increased.
@@ -85,7 +85,8 @@ Common server systems often repeat the same actions every time the boot,
 which means that system-provided entropy might not be immediately
 available.
 Many hardware systems provide RNG facilities that may be used as
-entropy sources, such as rdrand/rdseed on X86 class CPUs, RNDR registers on
+entropy sources, such as `rdrand`/`rdseed` on X86 class CPUs, and
+`RNDR` registers on
 ARM CPUs.
 
 Combination of multiple entropy sources is desirable where possible, to
@@ -200,4 +201,5 @@ This document has no IANA actions.
 # Acknowledgments
 {:numbered="false"}
 
-TODO acknowledge.
+Damien Miller contributed enough to be considered a co-author, and will
+be recorded as such if he agrees.
