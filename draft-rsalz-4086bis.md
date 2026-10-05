@@ -39,6 +39,12 @@ informative:
     ARC4RAND:
       title: "arc4random manual page"
       target: https://man7.org/linux/man-pages/man3/arc4random.3.html
+    A4USRC:
+      title: "arc4random_uniform source"
+      target: https://github.com/openbsd/src/blob/master/lib/libc/crypt/arc4random_uniform.c
+      author:
+      -
+        name: "Damien Miller"
     GETRAND:
       title: "getrandom manual page"
       target: https://man7.org/linux/man-pages/man2/getrandom.2.html
@@ -96,8 +102,6 @@ Finally, the document concludes with the standrad IETF boilerplate
 sections.
 
 # Conventions and Definitions
-
-{::boilerplate bcp14-tagged}
 
 The following sub-sections define commonly-used terms.
 These are often mis-used, so the goal is to provide a common understanding.
@@ -213,7 +217,8 @@ pseudo-devices may be available; check the documentation.
 The primary difference is that the first will block if the kernel
 believes there is not enough entropy in the seed material.
 
-If the operating system does not provide something suitable, use a function
+If the operating system does not provide something suitable, use an
+OpenSSL function
 from the `RAND_bytes` set described in {{RANDBYTES}}, particularly if provided
 as part of the operating system distribution as it is most likely to
 enable the best source of entropy for seeding.
@@ -230,9 +235,23 @@ A full description and sample code can be found at {{TWIST}}.
 
 # Concerns {#concerns}
 
-Save seeds across boot
+This section details some likely concerns and issues to consider.
 
-Periodic reseeding
+## Reseeding
+
+A DRBG needs to be reseeded with additional entropy. The same sources
+used to provide the intial entropy can often be used in reseeding.
+The reseeding requirements depend on the DRBG implementation details;
+{{NISTDRBG}} provides an overview and some specifics. This is generally
+not necessary if the random bits are provided directly by the operating system.
+
+## Boot-time
+
+When a system boots, or re-boots, the hardware used (or measured) to provide
+the seed material is often in the same state every time. This leads to repeated
+bitstreams across reboots. It is tempting to store seed material in local
+storage and use it at system start-up. If that file is accessible to
+an adversary, the stream of bits can be predictable.
 
 ## Fork
 
@@ -242,8 +261,16 @@ Reset the RNG when forking.
 
 ## Uniform distribution {#uniform}
 
-arc4random_uniform() if the upper bound isn't a power of two.
-https://github.com/openbsd/src/blob/master/lib/libc/crypt/arc4random_uniform.c
+Modulo bias is a atistical distortion that happens when mapping a large
+random a larger range of random numbers into a smaller range using a
+modulo operation such as C's `%` operator.
+For example, mapping the eight values `[0 .. 7]` to
+the five values `[0 .. 4]` will be distorted because four is the
+only value produced from only one input. This is a concern when the
+upper bound isn't a power of two.
+
+Use the `arc4random_uniform()` function if it is available.
+Freely-avaiable source can be found at {{A4USRC}}.
 
 # Security Considerations
 
