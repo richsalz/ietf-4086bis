@@ -33,6 +33,7 @@ informative:
     RANDBYTES:
       title: "RAND_bytes"
       target: https://docs.openssl.org/master/man3/RAND_bytes/
+    RFC9846:
     BCRYPT:
      title: "BCryptGenRandom function (bcrypt.h)"
      target: https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/nf-bcrypt-bcryptgenrandom
@@ -214,7 +215,7 @@ is described in {{GETRAND}}.
 
 On older Unix-like systems, the `/dev/random` or `/dev/urandom`
 pseudo-devices may be available; check the documentation.
-The primary difference is that the first will block if the kernel
+Historically, the primary difference is that the first will block if the kernel
 believes there is not enough entropy in the seed material.
 
 If the operating system does not provide something suitable, use an
@@ -274,7 +275,8 @@ Freely-avaiable source can be found at {{A4USRC}}.
 
 # Security Considerations
 
-This is an important document!
+Appdendix C.1 of {{RFC9846}} gives useful advice on random numbers and
+seeding that are not specific to TLS.
 
 # IANA Considerations
 
@@ -285,5 +287,7 @@ This document has no IANA actions.
 
 # Acknowledgments
 {:numbered="false"}
+Stephen Farrel commented
+Stephen Farrel commented
 
 TODO
