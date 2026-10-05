@@ -88,11 +88,12 @@ Table of Contents
 
    Things have changed a great deal in the two decades since RFC 4086,
    "Randomness Requirements for Security," was published.  The
-   cryptographic community has greatly advanced its knowledge of the the
-   requirments and desirable properties for random number systems, the
-   algorithms that underpin them, how they may be used and how they have
-   been attacked.  In addition, as more IETF protocols use cryptography,
-   the need for good-quality randomness has greatly increased.
+   cryptographic community has greatly advanced its knowledge of the
+   requirments and desirable properties for random number generators,
+   the algorithms that underpin them, how they may be used, and how they
+   have been attacked.  In addition, as more IETF protocols use
+   cryptography, the need for good-quality randomness has greatly
+   increased.
 
    Copy some text from 4086 ?
 
@@ -137,7 +138,7 @@ Table of Contents
    time the boot, which means that system-provided entropy might not be
    immediately available.  Many hardware systems provide RNG facilities
    that may be used as entropy sources, such as rdrand/rdseed on X86
-   class CPUs, RNDR registers on ARM CPUs.
+   class CPUs, and RNDR registers on ARM CPUs.
 
    Combination of multiple entropy sources is desirable where possible,
    to avoid failure if one of them turns out to be predictable.
@@ -235,13 +236,12 @@ Table of Contents
    seeding.  If the library must be configured and compiled directly,
    see the notes in [OSSLCONFIG] about random number generation.
 
+   If feasible, use a main DRBG to seed two separate DRBG's: one to
+   generate private keys, and one for all other uses.
+
    For smaller systems that are not generating cryptographic material,
    the Mersenne Twister PRNG may be acceptable.  A full description and
    sample code can be found at [TWIST].
-
-   If possible, use a main DRBG to seed two separate DRBG's,
-   one to generate private keys, and one for all other users.
-   ????
 
 4.  Concerns
 
@@ -252,7 +252,8 @@ Table of Contents
 4.1.  Fork
 
    It's common for a server to fork a separate client process for each
-   incoming connection, or have a pool.  Reset the RNG when forking.
+   incoming connection, or pre-create a pool to handle client requests.
+   Reset the RNG when forking.
 
 4.2.  Uniform distribution
 
@@ -313,7 +314,7 @@ Table of Contents
 
 Acknowledgments
 
-   TODO acknowledge.
+   TODO
 
 Authors' Addresses
 
