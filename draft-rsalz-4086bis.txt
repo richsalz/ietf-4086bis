@@ -74,13 +74,13 @@ Table of Contents
      2.8.  Forward or Prediction resistance
    3.  Recommendations
    4.  Concerns
-     4.1.  Fork
-     4.2.  Uniform distribution
+     4.1.  Reseeding
+     4.2.  Boot-time
+     4.3.  Fork
+     4.4.  Uniform distribution
    5.  Security Considerations
    6.  IANA Considerations
-   7.  References
-     7.1.  Normative References
-     7.2.  Informative References
+   7.  Informative References
    Acknowledgments
    Authors' Addresses
 
@@ -108,12 +108,6 @@ Table of Contents
    concludes with the standrad IETF boilerplate sections.
 
 2.  Conventions and Definitions
-
-   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
-   "OPTIONAL" in this document are to be interpreted as described in
-   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
-   capitals, as shown here.
 
    The following sub-sections define commonly-used terms.  These are
    often mis-used, so the goal is to provide a common understanding.
@@ -174,7 +168,7 @@ Table of Contents
    A device or algorithm that produces a sequence of bits that are both
    statistically independent -- knowing one bit provides no information
    about the value of any other bit -- and unbiased -- no value is more
-   likely to occur than any other value.  See Section 4.2 for concerns
+   likely to occur than any other value.  See Section 4.4 for concerns
    about bias.
 
 2.5.  Deterministic Random Bit Generator (DRBG)
@@ -229,8 +223,8 @@ Table of Contents
    difference is that the first will block if the kernel believes there
    is not enough entropy in the seed material.
 
-   If the operating system does not provide something suitable, use a
-   function from the RAND_bytes set described in [RANDBYTES],
+   If the operating system does not provide something suitable, use an
+   OpenSSL function from the RAND_bytes set described in [RANDBYTES],
    particularly if provided as part of the operating system distribution
    as it is most likely to enable the best source of entropy for
    seeding.  If the library must be configured and compiled directly,
@@ -245,21 +239,43 @@ Table of Contents
 
 4.  Concerns
 
-   Save seeds across boot
+   This section details some likely concerns and issues to consider.
 
-   Periodic reseeding
+4.1.  Reseeding
 
-4.1.  Fork
+   A DRBG needs to be reseeded with additional entropy.  The same
+   sources used to provide the intial entropy can often be used in
+   reseeding.  The reseeding requirements depend on the DRBG
+   implementation details; [NISTDRBG] provides an overview and some
+   specifics.  This is generally not necessary if the random bits are
+   provided directly by the operating system.
+
+4.2.  Boot-time
+
+   When a system boots, or re-boots, the hardware used (or measured) to
+   provide the seed material is often in the same state every time.
+   This leads to repeated bitstreams across reboots.  It is tempting to
+   store seed material in local storage and use it at system start-up.
+   If that file is accessible to an adversary, the stream of bits can be
+   predictable.
+
+4.3.  Fork
 
    It's common for a server to fork a separate client process for each
    incoming connection, or pre-create a pool to handle client requests.
    Reset the RNG when forking.
 
-4.2.  Uniform distribution
+4.4.  Uniform distribution
 
-   arc4random_uniform() if the upper bound isn't a power of two.
-   https://github.com/openbsd/src/blob/master/lib/libc/crypt/
-   arc4random_uniform.c
+   Modulo bias is a atistical distortion that happens when mapping a
+   large random a larger range of random numbers into a smaller range
+   using a modulo operation such as C's % operator.  For example,
+   mapping the eight values [0 .. 7] to the five values [0 .. 4] will be
+   distorted because four is the only value produced from only one
+   input.  This is a concern when the upper bound isn't a power of two.
+
+   Use the arc4random_uniform() function if it is available.  Freely-
+   avaiable source can be found at [A4USRC].
 
 5.  Security Considerations
 
@@ -269,20 +285,11 @@ Table of Contents
 
    This document has no IANA actions.
 
-7.  References
+7.  Informative References
 
-7.1.  Normative References
-
-   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", BCP 14, RFC 2119,
-              DOI 10.17487/RFC2119, March 1997,
-              <https://www.rfc-editor.org/rfc/rfc2119>.
-
-   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
-              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
-              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
-
-7.2.  Informative References
+   [A4USRC]   Miller, D., "arc4random_uniform source", n.d.,
+              <https://github.com/openbsd/src/blob/master/lib/libc/
+              crypt/arc4random_uniform.c>.
 
    [ARC4RAND] "arc4random manual page", n.d.,
               <https://man7.org/linux/man-pages/man3/arc4random.3.html>.
