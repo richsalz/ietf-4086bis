@@ -6,7 +6,7 @@ SAAG Working Group                                             D. Miller
 Internet-Draft                                                   OpenSSH
 Obsoletes: 4086 (if approved)                                    R. Salz
 Intended status: Best Current Practice         Akamai Technologies, Inc.
-Expires: 8 April 2027                                     5 October 2026
+Expires: 9 April 2027                                     6 October 2026
 
 
                            On Random Numbers
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 April 2027.
+   This Internet-Draft will expire on 9 April 2027.
 
 Copyright Notice
 
@@ -272,12 +272,12 @@ Table of Contents
 
 4.4.  Uniform distribution
 
-   Modulo bias is a atistical distortion that happens when mapping a
-   large random a larger range of random numbers into a smaller range
-   using a modulo operation such as C's % operator.  For example,
-   mapping the eight values [0 .. 7] to the five values [0 .. 4] will be
-   distorted because four is the only value produced from only one
-   input.  This is a concern when the upper bound isn't a power of two.
+   Modulo bias is a stistical distortion that happens when mapping a a
+   larger range of random numbers into a smaller range using a modulo
+   operation such as C's % operator.  For example, mapping the eight
+   values [0 .. 7] to the five values [0 .. 4] will be distorted because
+   four is the only value produced from only one input.  This is a
+   concern when the upper bound isn't a power of two.
 
    Use the arc4random_uniform() function if it is available.  Freely-
    avaiable source can be found at [A4USRC].
