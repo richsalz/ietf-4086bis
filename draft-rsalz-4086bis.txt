@@ -6,7 +6,7 @@ SAAG Working Group                                             D. Miller
 Internet-Draft                                                   OpenSSH
 Obsoletes: 4086 (if approved)                                    R. Salz
 Intended status: Best Current Practice         Akamai Technologies, Inc.
-Expires: 8 April 2027                                     5 October 2026
+Expires: 9 April 2027                                     6 October 2026
 
 
                            On Random Numbers
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 April 2027.
+   This Internet-Draft will expire on 9 April 2027.
 
 Copyright Notice
 
@@ -80,7 +80,8 @@ Table of Contents
      4.4.  Uniform distribution
    5.  Security Considerations
    6.  IANA Considerations
-   7.  Informative References
+   7.  Change Log
+   8.  Informative References
    Acknowledgments
    Authors' Addresses
 
@@ -285,7 +286,11 @@ Table of Contents
 
    This document has no IANA actions.
 
-7.  Informative References
+7.  Change Log
+
+   *  Draft 0: Published, asked for DISPATCH and CC'd SAAG.
+
+8.  Informative References
 
    [A4USRC]   Miller, D., "arc4random_uniform source", n.d.,
               <https://github.com/openbsd/src/blob/master/lib/libc/
