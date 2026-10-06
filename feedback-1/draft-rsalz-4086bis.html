@@ -10,10 +10,11 @@
 <meta content='
        Things have changed a great deal in the two decades since RFC 4086,
 "Randomness Requirements for Security," was published.
-In addition, as more IETF protocols use cryptography, the need
-for good-quality randomness has greatly increased. 
-       This document provides a definition of relevant terms and
-recommendations for best practices at the time of writing. 
+Notably, facilities to generate high-quality random
+numbers are widely available on most common computing platforms. 
+       While RFC 4086 provides much information to those implementing
+such a facility, this document takes a different approach, encouraging
+implementors to use facilities already available to them. 
     ' name="description">
 <meta content="xml2rfc 3.34.1" name="generator">
 <meta content="draft-rsalz-4086bis-latest" name="ietf.draft">
@@ -1061,9 +1062,6 @@ svg {
 <dd class="workgroup">SAAG Working Group</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
 <dd class="internet-draft">draft-rsalz-4086bis-latest</dd>
-<dt class="label-obsoletes">Obsoletes:</dt>
-<dd class="obsoletes">
-<a href="https://www.rfc-editor.org/rfc/rfc4086" class="eref">4086</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
 <time datetime="2026-10-06" class="published">6 October 2026</time>
@@ -1090,10 +1088,11 @@ svg {
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">Things have changed a great deal in the two decades since RFC 4086,
 "Randomness Requirements for Security," was published.
-In addition, as more IETF protocols use cryptography, the need
-for good-quality randomness has greatly increased.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
-<p id="section-abstract-2">This document provides a definition of relevant terms and
-recommendations for best practices at the time of writing.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
+Notably, facilities to generate high-quality random
+numbers are widely available on most common computing platforms.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-2">While RFC 4086 provides much information to those implementing
+such a facility, this document takes a different approach, encouraging
+implementors to use facilities already available to them.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-discussion-venues">
@@ -1240,14 +1239,11 @@ recommendations for best practices at the time of writing.<a href="#section-abst
       </h2>
 <p id="section-1-1">Things have changed a great deal in the two decades since RFC 4086,
 "Randomness Requirements for Security," was published.
-The cryptographic community has greatly advanced its knowledge of
-the requirements and desirable properties for random number generators,
-the algorithms that underpin them, how they may be used, and how they have
-been attacked.
-In addition, as more IETF protocols use cryptography, the need
-for good-quality randomness has greatly increased.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">This document provides a definition of relevant terms and
-recommendations for best practices at the time of writing.<a href="#section-1-2" class="pilcrow">¶</a></p>
+Notably, facilities to generate high-quality random
+numbers are widely available on most common computing platforms.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">While RFC 4086 provides much information to those implementing
+such a facility, this document takes a different approach, encouraging
+implementors to use facilities already available to them.<a href="#section-1-2" class="pilcrow">¶</a></p>
 <div id="structure-of-this-document">
 <section id="section-1.1">
         <h3 id="name-structure-of-this-document">
@@ -1400,8 +1396,8 @@ This is commonly called "forward secrecy" in protocols such as TLS.<a href="#sec
 <a href="#section-2.8" class="section-number selfRef">2.8. </a><a href="#name-forward-or-prediction-resis" class="section-name selfRef">Forward or Prediction resistance</a>
         </h3>
 <p id="section-2.8-1">If an adversary knows the state of the RBG at a time <code>T</code>, they will be unable
-to predict the output at a time, <code>T+1</code>.  This can only be provided only by
-ensuring that a RBG is reseeded between consecutive requests, provided that
+to predict the output at a time, <code>T+1</code>.  This can only be provided by
+ensuring that a RBG is reseeded between consecutive requests, as long as
 knowledge of the current RBG internal state does not allow an adversary any
 useful knowledge about future RBG internal states or outputs.<a href="#section-2.8-1" class="pilcrow">¶</a></p>
 </section>
@@ -1531,8 +1527,12 @@ some other stuff, not sufficient?<a href="#section-4.5-1" class="pilcrow">¶</a>
 <ul class="normal">
 <li class="normal" id="section-7-1.1">
           <p id="section-7-1.1.1">Draft 1:
+Fix typo's (ispell).
 Various clarifying edits by Dan Wing.
-Remove suggestions to copy text from RFC 4086.
+This document no longer obsoletes RFC 4086, but provides different guidance
+for users of random numbers, not implementors thereof.
+Remove suggestions to copy text from RFC 4086; this no longer obsoletes
+that RFC but explains why this provides new guidance.
 Rewrite entropy definition (Marsh Ray).
 Don't mention mouse as an entropy source; placeholder for Hardware RNG
 considerations (Adam Shostack).
