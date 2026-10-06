@@ -266,8 +266,8 @@ Reset the RNG when forking.
 
 ## Uniform distribution {#uniform}
 
-Modulo bias is a atistical distortion that happens when mapping a large
-random a larger range of random numbers into a smaller range using a
+Modulo bias is a stistical distortion that happens when mapping a
+a larger range of random numbers into a smaller range using a
 modulo operation such as C's `%` operator.
 For example, mapping the eight values `[0 .. 7]` to
 the five values `[0 .. 4]` will be distorted because four is the
