@@ -111,9 +111,10 @@ All of the definitions below should be taken in the context of cryptography.
 
 Entropy is a property, not a value, and it means how hard it is to guess the
 value. For example, a coin flip as low entropy because there are only two
-choices and a four-digit PIN has no more than 10,000 possibilities. On the
-other hand,  256-byte SHA3 (ref needed) digest has very high entropy because
-it is extremely hard to predict.
+choices and a four-digit numeric PIN has no more than 10,000 possibilities.
+On the
+other hand, flipping a coin 256 times has very high entropy because
+it is extremely hard to predict the full set of results.
 
 Sufficient entropy is a necessary (but not sufficient) property for a secure
 random number generation system. Without sufficient entropy the system may be
@@ -156,15 +157,19 @@ counter.
 In many protocols, nonce values are sent in cleartext. For example,
 the initial SSH key exchange (RFC 4253 section 7.1) includes a 16 byte
 "cookie" that each peer sends to make each key exchange (statistically)
-unique. Nonces therefore represent one path by which an attacker may directly
+unique. Nonces that directly using the RNG output, as opposed to
+hashing it, therefore represent one
+path by which an attacker may directly
 observe the raw output of a random number system.
 
 ## Random Bit Generator (RBG)
 
-A device or algorithm that produces a sequence of bits that are
-both statistically independent -- knowing one bit provides no information
-about the value of any other bit -- and unbiased -- no value is more
-likely to occur than any other value.
+A device or algorithm that produces a sequence of bits that have
+the following two characteristics:
+
+- It is statistically independent: knowing one bit provides no
+information about the value of any other bit; and
+- It is unbiased: no value is more likely to occur than any other value.
 See {{uniform}} for concerns about bias.
 
 ## Deterministic Random Bit Generator (DRBG)
@@ -261,8 +266,8 @@ Reset the RNG when forking.
 
 ## Uniform distribution {#uniform}
 
-Modulo bias is a atistical distortion that happens when mapping a large
-random a larger range of random numbers into a smaller range using a
+Modulo bias is a stistical distortion that happens when mapping a
+a larger range of random numbers into a smaller range using a
 modulo operation such as C's `%` operator.
 For example, mapping the eight values `[0 .. 7]` to
 the five values `[0 .. 4]` will be distorted because four is the
@@ -282,11 +287,13 @@ This document has no IANA actions.
 
 # Change Log
 
+- Draft 1:
+Various clarifying edits by Dan Wing.
+
 - Draft 0: Published, asked for DISPATCH and CC'd SAAG.
 
 --- back
 
 # Acknowledgments
-{:numbered="false"}
 
 TODO
