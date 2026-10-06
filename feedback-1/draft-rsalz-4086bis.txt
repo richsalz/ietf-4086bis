@@ -225,9 +225,9 @@ Table of Contents
    BCryptGenRandom() function described in [BCRYPT].
 
    For OpenBSD 2.1, FreeBSD 3.0, NetBSD 1.6, DragonFly 1.0, or Linux C
-   library since July 2022 use the arc4random() describred in
-   [ARC4RAND].  The getrandom() function is also available on many
-   systems and is described in [GETRAND].
+   library since July 2022 use the arc4random() described in [ARC4RAND].
+   The getrandom() function is also available on many systems and is
+   described in [GETRAND].
 
    On older Unix-like systems, the /dev/random or /dev/urandom pseudo-
    devices may be available; check the documentation.  Historically, he
