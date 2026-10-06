@@ -280,6 +280,9 @@ This is an important document!
 
 This document has no IANA actions.
 
+# Change Log
+
+- Draft 0: Published, asked for DISPATCH and CC'd SAAG.
 
 --- back
 
