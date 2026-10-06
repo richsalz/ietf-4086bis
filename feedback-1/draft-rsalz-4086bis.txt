@@ -230,9 +230,10 @@ Table of Contents
    systems and is described in [GETRAND].
 
    On older Unix-like systems, the /dev/random or /dev/urandom pseudo-
-   devices may be available; check the documentation.  The primary
-   difference is that the first will block if the kernel believes there
-   is not enough entropy in the seed material.
+   devices may be available; check the documentation.  Historically, he
+   primary difference is that the first would block if the kernel
+   believed there is not enough entropy in the seed material; this may
+   no longer be true.
 
    If the operating system does not provide something suitable, use an
    OpenSSL function from the RAND_bytes set described in [RANDBYTES],
@@ -306,7 +307,8 @@ Table of Contents
    *  Draft 1: Various clarifying edits by Dan Wing.  Remove suggestions
       to copy text from RFC 4086.  Rewrite entropy definition (Marsh
       Ray).  Don't mention mouse as an entropy source; placeholder for
-      Hardware RNG considerations (Adam Shostack).
+      Hardware RNG considerations (Adam Shostack).  Give historic
+      difference between /dev/*random (Stephen Farrell)
 
    *  Draft 0: Published, asked for DISPATCH and CC'd SAAG.
 
