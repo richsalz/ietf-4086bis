@@ -9,7 +9,6 @@ area: Security
 workgroup: SAAG Working Group
 stand_alone: yes
 smart_quotes: no
-obsoletes: 4086
 pi: [toc, sortrefs, symrefs]
 
 author:
@@ -68,12 +67,12 @@ informative:
 
 Things have changed a great deal in the two decades since RFC 4086,
 "Randomness Requirements for Security," was published.
-In addition, as more IETF protocols use cryptography, the need
-for good-quality randomness has greatly increased.
+Notably, facilities to generate high-quality random
+numbers are widely available on most common computing platforms.
 
-This document provides a definition of relevant terms and
-recommendations for best practices at the time of writing.
-
+While RFC 4086 provides much information to those implementing
+such a facility, this document takes a different approach, encouraging
+implementors to use facilities already available to them.
 
 --- middle
 
@@ -81,15 +80,12 @@ recommendations for best practices at the time of writing.
 
 Things have changed a great deal in the two decades since RFC 4086,
 "Randomness Requirements for Security," was published.
-The cryptographic community has greatly advanced its knowledge of
-the requirements and desirable properties for random number generators,
-the algorithms that underpin them, how they may be used, and how they have
-been attacked.
-In addition, as more IETF protocols use cryptography, the need
-for good-quality randomness has greatly increased.
+Notably, facilities to generate high-quality random
+numbers are widely available on most common computing platforms.
 
-This document provides a definition of relevant terms and
-recommendations for best practices at the time of writing.
+While RFC 4086 provides much information to those implementing
+such a facility, this document takes a different approach, encouraging
+implementors to use facilities already available to them.
 
 ## Structure of this Document
 
@@ -205,8 +201,8 @@ This is commonly called "forward secrecy" in protocols such as TLS.
 ## Forward or Prediction resistance
 
 If an adversary knows the state of the RBG at a time `T`, they will be unable
-to predict the output at a time, `T+1`.  This can only be provided only by
-ensuring that a RBG is reseeded between consecutive requests, provided that
+to predict the output at a time, `T+1`.  This can only be provided by
+ensuring that a RBG is reseeded between consecutive requests, as long as
 knowledge of the current RBG internal state does not allow an adversary any
 useful knowledge about future RBG internal states or outputs.
 
@@ -298,8 +294,12 @@ This document has no IANA actions.
 # Change Log
 
 - Draft 1:
+Fix typo's (ispell).
 Various clarifying edits by Dan Wing.
-Remove suggestions to copy text from RFC 4086.
+This document no longer obsoletes RFC 4086, but provides different guidance
+for users of random numbers, not implementors thereof.
+Remove suggestions to copy text from RFC 4086; this no longer obsoletes
+that RFC but explains why this provides new guidance.
 Rewrite entropy definition (Marsh Ray).
 Don't mention mouse as an entropy source; placeholder for Hardware RNG
 considerations (Adam Shostack).
