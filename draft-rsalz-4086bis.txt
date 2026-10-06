@@ -82,7 +82,7 @@ Table of Contents
    6.  IANA Considerations
    7.  Change Log
    8.  Informative References
-   Acknowledgments
+   Appendix A.  Acknowledgments
    Authors' Addresses
 
 1.  Introduction
@@ -119,9 +119,10 @@ Table of Contents
 
    Entropy is a property, not a value, and it means how hard it is to
    guess the value.  For example, a coin flip as low entropy because
-   there are only two choices and a four-digit PIN has no more than
-   10,000 possibilities.  On the other hand, 256-byte SHA3 (ref needed)
-   digest has very high entropy because it is extremely hard to predict.
+   there are only two choices and a four-digit numeric PIN has no more
+   than 10,000 possibilities.  On the other hand, flipping a coin 256
+   times has very high entropy because it is extremely hard to predict
+   the full set of results.
 
    Sufficient entropy is a necessary (but not sufficient) property for a
    secure random number generation system.  Without sufficient entropy
@@ -160,17 +161,21 @@ Table of Contents
    In many protocols, nonce values are sent in cleartext.  For example,
    the initial SSH key exchange (RFC 4253 section 7.1) includes a 16
    byte "cookie" that each peer sends to make each key exchange
-   (statistically) unique.  Nonces therefore represent one path by which
-   an attacker may directly observe the raw output of a random number
+   (statistically) unique.  Nonces that directly using the RNG output,
+   as opposed to hashing it, therefore represent one path by which an
+   attacker may directly observe the raw output of a random number
    system.
 
 2.4.  Random Bit Generator (RBG)
 
-   A device or algorithm that produces a sequence of bits that are both
-   statistically independent -- knowing one bit provides no information
-   about the value of any other bit -- and unbiased -- no value is more
-   likely to occur than any other value.  See Section 4.4 for concerns
-   about bias.
+   A device or algorithm that produces a sequence of bits that have the
+   following two characteristics:
+
+   *  It is statistically independent: knowing one bit provides no
+      information about the value of any other bit; and
+
+   *  It is unbiased: no value is more likely to occur than any other
+      value.  See Section 4.4 for concerns about bias.
 
 2.5.  Deterministic Random Bit Generator (DRBG)
 
@@ -268,12 +273,12 @@ Table of Contents
 
 4.4.  Uniform distribution
 
-   Modulo bias is a atistical distortion that happens when mapping a
-   large random a larger range of random numbers into a smaller range
-   using a modulo operation such as C's % operator.  For example,
-   mapping the eight values [0 .. 7] to the five values [0 .. 4] will be
-   distorted because four is the only value produced from only one
-   input.  This is a concern when the upper bound isn't a power of two.
+   Modulo bias is a stistical distortion that happens when mapping a a
+   larger range of random numbers into a smaller range using a modulo
+   operation such as C's % operator.  For example, mapping the eight
+   values [0 .. 7] to the five values [0 .. 4] will be distorted because
+   four is the only value produced from only one input.  This is a
+   concern when the upper bound isn't a power of two.
 
    Use the arc4random_uniform() function if it is available.  Freely-
    avaiable source can be found at [A4USRC].
@@ -287,6 +292,8 @@ Table of Contents
    This document has no IANA actions.
 
 7.  Change Log
+
+   *  Draft 1: Various clarifying edits by Dan Wing.
 
    *  Draft 0: Published, asked for DISPATCH and CC'd SAAG.
 
@@ -324,7 +331,7 @@ Table of Contents
    [TWIST]    "Marsenne Twister", n.d.,
               <https://en.wikipedia.org/wiki/Mersenne_Twister>.
 
-Acknowledgments
+Appendix A.  Acknowledgments
 
    TODO
 

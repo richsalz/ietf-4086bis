@@ -1219,7 +1219,7 @@ for good-quality randomness has greatly increased.<a href="#section-abstract-1" 
             <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
             <p id="section-toc.1-1.10.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
@@ -1279,9 +1279,10 @@ All of the definitions below should be taken in the context of cryptography.<a h
         </h3>
 <p id="section-2.1-1">Entropy is a property, not a value, and it means how hard it is to guess the
 value. For example, a coin flip as low entropy because there are only two
-choices and a four-digit PIN has no more than 10,000 possibilities. On the
-other hand,  256-byte SHA3 (ref needed) digest has very high entropy because
-it is extremely hard to predict.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
+choices and a four-digit numeric PIN has no more than 10,000 possibilities.
+On the
+other hand, flipping a coin 256 times has very high entropy because
+it is extremely hard to predict the full set of results.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
 <p id="section-2.1-2">Sufficient entropy is a necessary (but not sufficient) property for a secure
 random number generation system. Without sufficient entropy the system may be
 predictable.<a href="#section-2.1-2" class="pilcrow">¶</a></p>
@@ -1327,7 +1328,9 @@ counter.<a href="#section-2.3-2" class="pilcrow">¶</a></p>
 <p id="section-2.3-3">In many protocols, nonce values are sent in cleartext. For example,
 the initial SSH key exchange (RFC 4253 section 7.1) includes a 16 byte
 "cookie" that each peer sends to make each key exchange (statistically)
-unique. Nonces therefore represent one path by which an attacker may directly
+unique. Nonces that directly using the RNG output, as opposed to
+hashing it, therefore represent one
+path by which an attacker may directly
 observe the raw output of a random number system.<a href="#section-2.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1336,11 +1339,18 @@ observe the raw output of a random number system.<a href="#section-2.3-3" class=
         <h3 id="name-random-bit-generator-rbg">
 <a href="#section-2.4" class="section-number selfRef">2.4. </a><a href="#name-random-bit-generator-rbg" class="section-name selfRef">Random Bit Generator (RBG)</a>
         </h3>
-<p id="section-2.4-1">A device or algorithm that produces a sequence of bits that are
-both statistically independent -- knowing one bit provides no information
-about the value of any other bit -- and unbiased -- no value is more
-likely to occur than any other value.
-See <a href="#uniform" class="auto internal xref">Section 4.4</a> for concerns about bias.<a href="#section-2.4-1" class="pilcrow">¶</a></p>
+<p id="section-2.4-1">A device or algorithm that produces a sequence of bits that have
+the following two characteristics:<a href="#section-2.4-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.4-2.1">
+            <p id="section-2.4-2.1.1">It is statistically independent: knowing one bit provides no
+information about the value of any other bit; and<a href="#section-2.4-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-2.4-2.2">
+            <p id="section-2.4-2.2.1">It is unbiased: no value is more likely to occur than any other value.
+See <a href="#uniform" class="auto internal xref">Section 4.4</a> for concerns about bias.<a href="#section-2.4-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
 </section>
 </div>
 <div id="deterministic-random-bit-generator-drbg">
@@ -1470,8 +1480,8 @@ Reset the RNG when forking.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
         <h3 id="name-uniform-distribution">
 <a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-uniform-distribution" class="section-name selfRef">Uniform distribution</a>
         </h3>
-<p id="section-4.4-1">Modulo bias is a atistical distortion that happens when mapping a large
-random a larger range of random numbers into a smaller range using a
+<p id="section-4.4-1">Modulo bias is a stistical distortion that happens when mapping a
+a larger range of random numbers into a smaller range using a
 modulo operation such as C's <code>%</code> operator.
 For example, mapping the eight values <code>[0 .. 7]</code> to
 the five values <code>[0 .. 4]</code> will be distorted because four is the
@@ -1506,7 +1516,11 @@ Freely-avaiable source can be found at <span>[<a href="#A4USRC" class="cite xref
       </h2>
 <ul class="normal">
 <li class="normal" id="section-7-1.1">
-          <p id="section-7-1.1.1">Draft 0: Published, asked for DISPATCH and CC'd SAAG.<a href="#section-7-1.1.1" class="pilcrow">¶</a></p>
+          <p id="section-7-1.1.1">Draft 1:
+Various clarifying edits by Dan Wing.<a href="#section-7-1.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-7-1.2">
+          <p id="section-7-1.2.1">Draft 0: Published, asked for DISPATCH and CC'd SAAG.<a href="#section-7-1.2.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
@@ -1555,7 +1569,7 @@ Freely-avaiable source can be found at <span>[<a href="#A4USRC" class="cite xref
 <div id="acknowledgments">
 <section id="appendix-A">
       <h2 id="name-acknowledgments">
-<a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
+<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
 <p id="appendix-A-1">TODO<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 </section>
