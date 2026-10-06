@@ -80,7 +80,8 @@ Table of Contents
      4.4.  Uniform distribution
    5.  Security Considerations
    6.  IANA Considerations
-   7.  Informative References
+   7.  Change Log
+   8.  Informative References
    Appendix A.  Acknowledgments
    Authors' Addresses
 
@@ -290,7 +291,13 @@ Table of Contents
 
    This document has no IANA actions.
 
-7.  Informative References
+7.  Change Log
+
+   *  Draft 1: Various clarifying edits by Dan Wing.
+
+   *  Draft 0: Published, asked for DISPATCH and CC'd SAAG.
+
+8.  Informative References
 
    [A4USRC]   Miller, D., "arc4random_uniform source", n.d.,
               <https://github.com/openbsd/src/blob/master/lib/libc/
@@ -325,8 +332,6 @@ Table of Contents
               <https://en.wikipedia.org/wiki/Mersenne_Twister>.
 
 Appendix A.  Acknowledgments
-
-   Dan Wing provided useful feedback on the first draft.
 
    TODO
 
