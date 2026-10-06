@@ -287,11 +287,13 @@ This document has no IANA actions.
 
 # Change Log
 
+- Draft 1:
+Various clarifying edits by Dan Wing.
+
 - Draft 0: Published, asked for DISPATCH and CC'd SAAG.
 
 --- back
 
 # Acknowledgments
-Dan Wing provided useful feedback on the first draft.
 
 TODO
