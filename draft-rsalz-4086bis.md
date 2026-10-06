@@ -71,7 +71,8 @@ Things have changed a great deal in the two decades since RFC 4086,
 In addition, as more IETF protocols use cryptography, the need
 for good-quality randomness has greatly increased.
 
-Copy from 4086 ?
+This document provides a definition of relevant terms and
+recommendations for bast practices at the time of writing.
 
 
 --- middle
@@ -87,7 +88,8 @@ been attacked.
 In addition, as more IETF protocols use cryptography, the need
 for good-quality randomness has greatly increased.
 
-    Copy some text from 4086 ?
+This document provides a definition of relevant terms and
+recommendations for bast practices at the time of writing.
 
 ## Structure of this Document
 
@@ -109,20 +111,22 @@ All of the definitions below should be taken in the context of cryptography.
 
 ## Entropy
 
-Entropy is a property, not a value, and it means how hard it is to guess the
-value. For example, a coin flip as low entropy because there are only two
-choices and a four-digit numeric PIN has no more than 10,000 possibilities.
-On the
-other hand, flipping a coin 256 times has very high entropy because
-it is extremely hard to predict the full set of results.
+When used in information science,
+entropy is the amount of information, expressed in units of bits, that is
+unknown to some other party (such as an attacker) in some scenario.  For
+example, to someone having no information about the actual outcome, "a value
+chosen by a single flip of an ideal coin" would present an entropy of 1.0
+bits, while "a sequence of 256 such flips" would present 256.0 bits.  A
+variable or protocol field of `N` bits can never represent more than `N` bits of
+entropy. The effective entropy encoded in actual data is often significantly
+less.
 
 Sufficient entropy is a necessary (but not sufficient) property for a secure
 random number generation system. Without sufficient entropy the system may be
 predictable.
 
-Good sources of entropy include hardware
-timings, mouse movements (if properly scaled) and the like -- things that are
-generated from hardware.
+Good sources of entropy include values generated from hardware, such as
+disk or network timings.
 Common server systems often repeat the same actions every time the boot,
 which means that system-provided entropy might not be immediately
 available.
@@ -277,6 +281,11 @@ upper bound isn't a power of two.
 Use the `arc4random_uniform()` function if it is available.
 Freely-avaiable source can be found at {{A4USRC}}.
 
+## Hardware
+
+Adam Shostack: when is the hardware RNG, washed through a hash function with
+some other stuff, not sufficient?
+
 # Security Considerations
 
 This is an important document!
@@ -289,6 +298,10 @@ This document has no IANA actions.
 
 - Draft 1:
 Various clarifying edits by Dan Wing.
+Remove suggestions to copy text from RFC 4086.
+Rewrite entropy definition (Marsh Ray).
+Don't mention mouse as an entropy source; placeholder for Hardware RNG
+considerations (Adam Shostack).
 
 - Draft 0: Published, asked for DISPATCH and CC'd SAAG.
 
