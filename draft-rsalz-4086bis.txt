@@ -4,9 +4,9 @@
 
 SAAG Working Group                                             D. Miller
 Internet-Draft                                                   OpenSSH
-Obsoletes: 4086 (if approved)                                    R. Salz
-Intended status: Best Current Practice         Akamai Technologies, Inc.
-Expires: 9 April 2027                                     6 October 2026
+Intended status: Best Current Practice                           R. Salz
+Expires: 10 April 2027                         Akamai Technologies, Inc.
+                                                          7 October 2026
 
 
                            On Random Numbers
@@ -15,11 +15,13 @@ Expires: 9 April 2027                                     6 October 2026
 Abstract
 
    Things have changed a great deal in the two decades since RFC 4086,
-   "Randomness Requirements for Security," was published.  In addition,
-   as more IETF protocols use cryptography, the need for good-quality
-   randomness has greatly increased.
+   "Randomness Requirements for Security," was published.  Notably,
+   facilities to generate high-quality random numbers are widely
+   available on most common computing platforms.
 
-   Copy from 4086 ?
+   While RFC 4086 provides much information to those implementing such a
+   facility, this document takes a different approach, encouraging
+   implementors to use facilities already available to them.
 
 Discussion Venues
 
@@ -43,7 +45,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 9 April 2027.
+   This Internet-Draft will expire on 10 April 2027.
 
 Copyright Notice
 
@@ -78,6 +80,7 @@ Table of Contents
      4.2.  Boot-time
      4.3.  Fork
      4.4.  Uniform distribution
+     4.5.  Hardware
    5.  Security Considerations
    6.  IANA Considerations
    7.  Change Log
@@ -88,15 +91,13 @@ Table of Contents
 1.  Introduction
 
    Things have changed a great deal in the two decades since RFC 4086,
-   "Randomness Requirements for Security," was published.  The
-   cryptographic community has greatly advanced its knowledge of the
-   requirments and desirable properties for random number generators,
-   the algorithms that underpin them, how they may be used, and how they
-   have been attacked.  In addition, as more IETF protocols use
-   cryptography, the need for good-quality randomness has greatly
-   increased.
+   "Randomness Requirements for Security," was published.  Notably,
+   facilities to generate high-quality random numbers are widely
+   available on most common computing platforms.
 
-   Copy some text from 4086 ?
+   While RFC 4086 provides much information to those implementing such a
+   facility, this document takes a different approach, encouraging
+   implementors to use facilities already available to them.
 
 1.1.  Structure of this Document
 
@@ -106,7 +107,7 @@ Table of Contents
    numbers.  This is followed by a section that lists some common
    concerns and mistakes, and may be thought of as a "Security
    Considerations" guide for implementors.  Finally, the document
-   concludes with the standrad IETF boilerplate sections.
+   concludes with the standard IETF boilerplate sections.
 
 2.  Conventions and Definitions
 
@@ -117,24 +118,26 @@ Table of Contents
 
 2.1.  Entropy
 
-   Entropy is a property, not a value, and it means how hard it is to
-   guess the value.  For example, a coin flip as low entropy because
-   there are only two choices and a four-digit numeric PIN has no more
-   than 10,000 possibilities.  On the other hand, flipping a coin 256
-   times has very high entropy because it is extremely hard to predict
-   the full set of results.
+   When used in information science, entropy is the amount of
+   information, expressed in units of bits, that is unknown to some
+   other party (such as an attacker) in some scenario.  For example, to
+   someone having no information about the actual outcome, "a value
+   chosen by a single flip of an ideal coin" would present an entropy of
+   1.0 bits, while "a sequence of 256 such flips" would present 256.0
+   bits.  A variable or protocol field of N bits can never represent
+   more than N bits of entropy.  The effective entropy encoded in actual
+   data is often significantly less.
 
    Sufficient entropy is a necessary (but not sufficient) property for a
    secure random number generation system.  Without sufficient entropy
    the system may be predictable.
 
-   Good sources of entropy include hardware timings, mouse movements (if
-   properly scaled) and the like -- things that are generated from
-   hardware.  Common server systems often repeat the same actions every
-   time the boot, which means that system-provided entropy might not be
-   immediately available.  Many hardware systems provide RNG facilities
-   that may be used as entropy sources, such as rdrand/rdseed on X86
-   class CPUs, and RNDR registers on ARM CPUs.
+   Good sources of entropy include values generated from hardware, such
+   as disk or network timings.  Common server systems often repeat the
+   same actions every time the boot, which means that system-provided
+   entropy might not be immediately available.  Many hardware systems
+   provide RNG facilities that may be used as entropy sources, such as
+   rdrand/rdseed on X86 class CPUs, and RNDR registers on ARM CPUs.
 
    Combination of multiple entropy sources is desirable where possible,
    to avoid failure if one of them turns out to be predictable.
@@ -142,7 +145,7 @@ Table of Contents
 2.2.  Seed
 
    A seed is the specific value used to initialize an algorithm that
-   generates a sequence of unpredicable "random" numbers.  The seed
+   generates a sequence of unpredictable "random" numbers.  The seed
    value should have high entropy.  It is important that the seed not be
    disclosed, as an adversary could duplicate the bytes generated by the
    algorithm and determine any keys generated.
@@ -161,7 +164,7 @@ Table of Contents
    In many protocols, nonce values are sent in cleartext.  For example,
    the initial SSH key exchange (RFC 4253 section 7.1) includes a 16
    byte "cookie" that each peer sends to make each key exchange
-   (statistically) unique.  Nonces that directly using the RNG output,
+   (statistically) unique.  A nonce that directly uses the RNG output,
    as opposed to hashing it, therefore represent one path by which an
    attacker may directly observe the raw output of a random number
    system.
@@ -208,10 +211,10 @@ Table of Contents
 
    If an adversary knows the state of the RBG at a time T, they will be
    unable to predict the output at a time, T+1.  This can only be
-   provided only by ensuring that a RBG is reseeded between consecutive
-   requests, provided that knowledge of the current RBG internal state
-   does not allow an adversary any useful knowledge about future RBG
-   internal states or outputs.
+   provided by ensuring that a RBG is reseeded between consecutive
+   requests, as long as knowledge of the current RBG internal state does
+   not allow an adversary any useful knowledge about future RBG internal
+   states or outputs.
 
 3.  Recommendations
 
@@ -220,14 +223,15 @@ Table of Contents
    BCryptGenRandom() function described in [BCRYPT].
 
    For OpenBSD 2.1, FreeBSD 3.0, NetBSD 1.6, DragonFly 1.0, or Linux C
-   library since July 2022 use the arc4random() describred in
-   [ARC4RAND].  The getrandom() function is also available on many
-   systems and is described in [GETRAND].
+   library since July 2022 use the arc4random() described in [ARC4RAND].
+   The getrandom() function is also available on many systems and is
+   described in [GETRAND].
 
    On older Unix-like systems, the /dev/random or /dev/urandom pseudo-
-   devices may be available; check the documentation.  The primary
-   difference is that the first will block if the kernel believes there
-   is not enough entropy in the seed material.
+   devices may be available; check the documentation.  Historically, he
+   primary difference is that the first would block if the kernel
+   believed there is not enough entropy in the seed material; this may
+   no longer be true.
 
    If the operating system does not provide something suitable, use an
    OpenSSL function from the RAND_bytes set described in [RANDBYTES],
@@ -273,7 +277,7 @@ Table of Contents
 
 4.4.  Uniform distribution
 
-   Modulo bias is a stistical distortion that happens when mapping a a
+   Modulo bias is a statistical distortion that happens when mapping a a
    larger range of random numbers into a smaller range using a modulo
    operation such as C's % operator.  For example, mapping the eight
    values [0 .. 7] to the five values [0 .. 4] will be distorted because
@@ -281,7 +285,12 @@ Table of Contents
    concern when the upper bound isn't a power of two.
 
    Use the arc4random_uniform() function if it is available.  Freely-
-   avaiable source can be found at [A4USRC].
+   available source can be found at [A4USRC].
+
+4.5.  Hardware
+
+   Adam Shostack: when is the hardware RNG, washed through a hash
+   function with some other stuff, not sufficient?
 
 5.  Security Considerations
 
@@ -293,7 +302,15 @@ Table of Contents
 
 7.  Change Log
 
-   *  Draft 1: Various clarifying edits by Dan Wing.
+   *  Draft 1: Fix typo's (ispell).  Various clarifying edits by Dan
+      Wing.  This document no longer obsoletes RFC 4086, but provides
+      different guidance for users of random numbers, not implementors
+      thereof.  Remove suggestions to copy text from RFC 4086; this no
+      longer obsoletes that RFC but explains why this provides new
+      guidance.  Rewrite entropy definition (Marsh Ray).  Don't mention
+      mouse as an entropy source; placeholder for Hardware RNG
+      considerations (Adam Shostack).  Give historic difference between
+      /dev/*random (Stephen Farrell)
 
    *  Draft 0: Published, asked for DISPATCH and CC'd SAAG.
 
