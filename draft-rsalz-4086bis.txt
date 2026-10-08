@@ -5,8 +5,8 @@
 SAAG Working Group                                             D. Miller
 Internet-Draft                                                   OpenSSH
 Intended status: Best Current Practice                           R. Salz
-Expires: 10 April 2027                         Akamai Technologies, Inc.
-                                                          7 October 2026
+Expires: 11 April 2027                         Akamai Technologies, Inc.
+                                                          8 October 2026
 
 
                            On Random Numbers
@@ -45,7 +45,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 April 2027.
+   This Internet-Draft will expire on 11 April 2027.
 
 Copyright Notice
 
@@ -71,9 +71,10 @@ Table of Contents
      2.3.  Nonce
      2.4.  Random Bit Generator (RBG)
      2.5.  Deterministic Random Bit Generator (DRBG)
-     2.6.  Pseudo-Random Number Generator (PRNG)
-     2.7.  Backtracking resistance
-     2.8.  Forward or Prediction resistance
+     2.6.  Random Number Generator (RNG)
+     2.7.  Pseudo-Random Number Generator (PRNG)
+     2.8.  Backtracking resistance
+     2.9.  Forward or Prediction resistance
    3.  Recommendations
    4.  Concerns
      4.1.  Reseeding
@@ -188,13 +189,17 @@ Table of Contents
    provided new seed material when the limit is reached.  See [NISTDRBG]
    for more complete specification and algorithm descriptions.
 
-2.6.  Pseudo-Random Number Generator (PRNG)
+2.6.  Random Number Generator (RNG)
 
-   An older term for DRBG, although it can imply that the seed need not
+   A casual term that, when feasible, should be avoided.
+
+2.7.  Pseudo-Random Number Generator (PRNG)
+
+   A more accurate term than RNG.  It can imply that the seed need not
    be kept private, such as when using the output stream for
    simulations.
 
-2.7.  Backtracking resistance
+2.8.  Backtracking resistance
 
    If an adversary knows the state of the RBG at a time T, they will be
    unable to recover the state at time T-1.  Further, all output up to
@@ -207,7 +212,7 @@ Table of Contents
    outputs.  This is commonly called "forward secrecy" in protocols such
    as TLS.
 
-2.8.  Forward or Prediction resistance
+2.9.  Forward or Prediction resistance
 
    If an adversary knows the state of the RBG at a time T, they will be
    unable to predict the output at a time, T+1.  This can only be
@@ -290,7 +295,8 @@ Table of Contents
 4.5.  Hardware
 
    Adam Shostack: when is the hardware RNG, washed through a hash
-   function with some other stuff, not sufficient?
+   function with some other stuff, not sufficient?  Is this more
+   relevant for those _writing_ an RNG?
 
 5.  Security Considerations
 
@@ -298,19 +304,20 @@ Table of Contents
 
 6.  IANA Considerations
 
-   This document has no IANA actions.
+   Stepehen: Look at what RFC9846, appendix C1 says.  And others?
 
 7.  Change Log
 
-   *  Draft 1: Fix typo's (ispell).  Various clarifying edits by Dan
-      Wing.  This document no longer obsoletes RFC 4086, but provides
-      different guidance for users of random numbers, not implementors
-      thereof.  Remove suggestions to copy text from RFC 4086; this no
-      longer obsoletes that RFC but explains why this provides new
-      guidance.  Rewrite entropy definition (Marsh Ray).  Don't mention
-      mouse as an entropy source; placeholder for Hardware RNG
-      considerations (Adam Shostack).  Give historic difference between
-      /dev/*random (Stephen Farrell)
+   *  Draft 1: Fix typo's (ispell).  This document no longer obsoletes
+      RFC 4086, but provides different guidance for users of random
+      numbers, not implementors thereof.  Remove suggestions to copy
+      text from RFC 4086; this no longer obsoletes that RFC but explains
+      why this provides new guidance.  Add RNG and clarify PRNG
+      definitions.  Various clarifying edits (Dan Wing).  Rewrite
+      entropy definition (Marsh Ray).  Don't mention mouse as an entropy
+      source; placeholder for Hardware RNG considerations (Adam
+      Shostack).  Give historic difference between /dev/*random (Stephen
+      Farrell)
 
    *  Draft 0: Published, asked for DISPATCH and CC'd SAAG.
 
