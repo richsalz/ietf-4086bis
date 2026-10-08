@@ -182,9 +182,13 @@ provided new seed material when the limit is reached.
 See {{NISTDRBG}} for more complete specification and algorithm
 descriptions.
 
+## Random Number Generator (RNG)
+
+A casual term that, when feasible, should be avoided.
+
 ## Pseudo-Random Number Generator (PRNG)
 
-An older term for DRBG, although it can imply that the seed need
+A more accurate term than RNG. It can imply that the seed need
 not be kept private, such as when using the output stream for simulations.
 
 ##  Backtracking resistance
@@ -281,7 +285,8 @@ Freely-available source can be found at {{A4USRC}}.
 ## Hardware
 
 Adam Shostack: when is the hardware RNG, washed through a hash function with
-some other stuff, not sufficient?
+some other stuff, not sufficient? Is this more relevant for those *writing*
+an RNG?
 
 # Security Considerations
 
@@ -295,11 +300,12 @@ This document has no IANA actions.
 
 - Draft 1:
 Fix typo's (ispell).
-Various clarifying edits by Dan Wing.
 This document no longer obsoletes RFC 4086, but provides different guidance
 for users of random numbers, not implementors thereof.
 Remove suggestions to copy text from RFC 4086; this no longer obsoletes
 that RFC but explains why this provides new guidance.
+Add RNG and clarify PRNG definitions.
+Various clarifying edits (Dan Wing).
 Rewrite entropy definition (Marsh Ray).
 Don't mention mouse as an entropy source; placeholder for Hardware RNG
 considerations (Adam Shostack).
