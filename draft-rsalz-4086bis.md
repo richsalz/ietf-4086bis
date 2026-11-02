@@ -149,8 +149,10 @@ A nonce is a number that is used once. It need not be secret, and is
 often public or part of the protocol. For example, QUIC defines a nonce
 that is used to detect if a packet has already been received.
 
-The non-repeatability can be highly important. For example, if AES-GCM
-repeats a nonce, an adversary can determine the key. AES-SIV is
+The non-repeatability can be highly important. For example, if a nonce
+is repeated when using AES-GCM, an adversary can recover the 
+message-authentication key.  With this, the adversary may compute the correct
+keyed hash over any ciphertext they would like to forge. AES-SIV is
 resistant to this. It is common for a nonce to be a simple incrementing
 counter.
 
