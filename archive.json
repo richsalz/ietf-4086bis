@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-11-01T03:21:35.379416+00:00",
+  "timestamp": "2026-11-03T04:39:06.634004+00:00",
   "repo": "richsalz/ietf-4086bis",
   "labels": [
     {
@@ -312,6 +312,32 @@
           "updatedAt": "2026-10-06T18:14:08Z"
         }
       ],
+      "reviews": []
+    },
+    {
+      "number": 9,
+      "id": "PR_kwDOTnTNoc8AAAABMXPWmg",
+      "title": "Update draft-rsalz-4086bis.md",
+      "url": "https://github.com/richsalz/ietf-4086bis/pull/9",
+      "state": "OPEN",
+      "author": "Casey1729",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Clarified that only the message-authentication key is recovered if a nonce is reused in AES-GCM.",
+      "createdAt": "2026-11-02T17:34:55Z",
+      "updatedAt": "2026-11-02T17:34:57Z",
+      "baseRepository": "richsalz/ietf-4086bis",
+      "baseRefName": "main",
+      "baseRefOid": "763a4d44b7542883236aba5873cdbd5f00db841a",
+      "headRepository": "Casey1729/ietf-4086bis",
+      "headRefName": "GCM_auth_key_remark",
+      "headRefOid": "717c6292346472b4a225e47bd06d884296e3078d",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
       "reviews": []
     }
   ]
